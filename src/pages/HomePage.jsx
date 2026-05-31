@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, FileText, Hash, Calendar, Layers, Award } from 'lucide-react';
+import { BookOpen, FileText } from 'lucide-react';
 import { loadDB, getStats } from '../utils/searcher';
 
 const TYPE_COLORS = {
@@ -10,22 +10,12 @@ const TYPE_COLORS = {
   '비교형': 'bg-orange-100 text-orange-700',
 };
 
-function StatCard({ icon: Icon, label, value, sub }) {
+function StatCard({ label, value, sub }) {
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-6 flex items-start gap-4 shadow-sm">
-      <div
-        className="w-11 h-11 rounded-lg flex items-center justify-center shrink-0"
-        style={{ backgroundColor: 'rgba(30,58,95,0.08)' }}
-      >
-        <Icon size={22} style={{ color: '#1e3a5f' }} />
-      </div>
-      <div>
-        <p className="text-xs text-slate-500 font-medium uppercase tracking-wide">{label}</p>
-        <p className="text-2xl font-bold mt-0.5" style={{ color: '#1e3a5f', fontFamily: 'JetBrains Mono, monospace' }}>
-          {value}
-        </p>
-        {sub && <p className="text-xs text-slate-400 mt-0.5">{sub}</p>}
-      </div>
+    <div className="bg-white rounded-xl border border-slate-200 p-3 shadow-sm">
+      <p className="text-xs text-gray-500 mb-1">{label}</p>
+      <p className="text-lg font-bold leading-tight" style={{ color: '#1e3a5f' }}>{value}</p>
+      <p className="text-xs text-gray-400 mt-1">{sub}</p>
     </div>
   );
 }
@@ -112,31 +102,11 @@ export default function HomePage() {
         <>
           <section>
             <h2 className="text-base font-semibold text-slate-700 mb-4">전체 현황</h2>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <StatCard
-                icon={Hash}
-                label="총 문제 수"
-                value={stats.total.toLocaleString()}
-                sub="기출문제 전체"
-              />
-              <StatCard
-                icon={Calendar}
-                label="수록 연도"
-                value={`${stats.years[0]}~${stats.years[stats.years.length - 1]}`}
-                sub={`${stats.years.length}개 연도`}
-              />
-              <StatCard
-                icon={Layers}
-                label="문제 유형"
-                value="4가지"
-                sub="용어·설명·논술·비교"
-              />
-              <StatCard
-                icon={Award}
-                label="최신 회차"
-                value={`제${stats.maxRound}회`}
-                sub="최고 회차 기준"
-              />
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <StatCard label="총 문제 수" value={stats.total.toLocaleString()} sub="기출문제 전체" />
+              <StatCard label="수록 연도" value={`${stats.years[0]}~${stats.years[stats.years.length - 1]}`} sub={`${stats.years.length}개 연도`} />
+              <StatCard label="문제 유형" value="4가지" sub="용어·설명·논술·비교" />
+              <StatCard label="최신 회차" value={`제${stats.maxRound}회`} sub="최고 회차 기준" />
             </div>
           </section>
 

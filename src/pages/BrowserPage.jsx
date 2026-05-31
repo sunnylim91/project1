@@ -306,18 +306,15 @@ export default function BrowserPage() {
                 <div className="py-12 text-center text-slate-400 text-sm">검색 결과가 없습니다.</div>
               ) : paginated.map((q) => (
                 <div key={q.id} className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-mono text-slate-400">{q.year}년 · 제{q.round}회</span>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-xs text-slate-400">{q.year}년 · 제{q.round}회</span>
                     <TypeBadge type={q.type} />
                   </div>
-                  <p
-                    className="text-sm text-slate-800 leading-relaxed mb-3 cursor-pointer"
-                    onClick={() => setModal(q)}
-                  >
+                  <p className="text-sm text-slate-800 leading-relaxed mb-3">
                     {q.question}
                   </p>
                   <button
-                    onClick={() => navigate(`/answer?id=${q.id}`)}
+                    onClick={() => navigate(`/answer?q=${encodeURIComponent(q.question)}`)}
                     className="w-full py-2 rounded-lg text-xs font-semibold text-white"
                     style={{ backgroundColor: '#1e3a5f' }}
                   >
