@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { BookOpen, FileText, TrendingUp, Cpu, Menu, X } from 'lucide-react';
+import { BookOpen, FileText, TrendingUp, Cpu, Menu, X, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
 const NAV_ITEMS = [
@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { path: '/browser', label: '기출문제',   icon: BookOpen },
   { path: '/answer',  label: '답안 생성',  icon: FileText },
   { path: '/trend',   label: '출제경향',   icon: TrendingUp },
+  { path: '/predict', label: '예상문제',   icon: Sparkles },
 ];
 
 export default function Layout({ children }) {

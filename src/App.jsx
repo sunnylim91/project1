@@ -8,6 +8,7 @@ const HomePage    = lazy(() => import('./pages/HomePage'));
 const BrowserPage = lazy(() => import('./pages/BrowserPage'));
 const AnswerPage  = lazy(() => import('./pages/AnswerPage'));
 const TrendPage   = lazy(() => import('./pages/TrendPage'));
+const PredictPage = lazy(() => import('./pages/PredictPage'));
 
 function PageLoader() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
               <Route path="/browser" element={<BrowserPage />} />
               <Route path="/answer"  element={<AnswerPage />} />
               <Route path="/trend"   element={<TrendPage />} />
+              <Route path="/predict" element={<PredictPage />} />
             </Routes>
           </Suspense>
         </Layout>
