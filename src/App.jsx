@@ -40,7 +40,7 @@ export default function App() {
         </div>
         <input
           type="password"
-          placeholder="AIza로 시작하는 키 입력"
+          placeholder="Gemini API 키 입력"
           className="w-full border rounded-lg px-3 py-2 text-sm mb-2"
           value={inputKey}
           onChange={(e) => setInputKey(e.target.value)}
@@ -50,12 +50,12 @@ export default function App() {
         <button
           id="btn-start"
           onClick={() => {
-            if (!inputKey.startsWith('AIza')) {
-              setError('올바른 키 형식이 아닙니다. AIza로 시작해야 합니다.');
+            if (inputKey.trim().length < 10) {
+              setError('API 키를 정확히 입력해주세요.');
               return;
             }
-            localStorage.setItem('GEMINI_API_KEY', inputKey);
-            setApiKey(inputKey);
+            localStorage.setItem('GEMINI_API_KEY', inputKey.trim());
+            setApiKey(inputKey.trim());
           }}
           className="w-full py-2.5 bg-[#1e3a5f] text-white rounded-lg text-sm font-medium"
         >
