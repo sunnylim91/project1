@@ -209,7 +209,7 @@ function PredictCard({ item, navigate }) {
 
 export default function PredictPage() {
   const navigate = useNavigate();
-  const [status, setStatus] = useState('idle'); // idle | loading | done | error
+  const [status, setStatus] = useState('idle'); // idle | preparing | loading | done | error
   const [result, setResult] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
   const [fromCache, setFromCache] = useState(false);
@@ -239,9 +239,13 @@ export default function PredictPage() {
         return;
       }
     }
-    setStatus('loading');
+    setStatus('preparing');
     setErrorMsg('');
     setFromCache(false);
+
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
+    setStatus('loading');
     try {
       const data = await fetchPredictions(apiKey);
       saveCache(data.problems);
@@ -271,11 +275,16 @@ export default function PredictPage() {
         <div className="flex justify-center">
           <button
             onClick={() => handleAnalyze(false)}
-            disabled={status === 'loading'}
+            disabled={status === 'preparing' || status === 'loading'}
             className="flex items-center gap-2 px-8 py-3 rounded-xl font-semibold text-sm transition-opacity hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed"
             style={{ backgroundColor: '#1e3a5f', color: '#fff' }}
           >
-            {status === 'loading' ? (
+            {status === 'preparing' ? (
+              <>
+                <Loader2 size={16} className="animate-spin" />
+                분석 준비 중...
+              </>
+            ) : status === 'loading' ? (
               <>
                 <Loader2 size={16} className="animate-spin" />
                 기출 DB 분석 중...
@@ -290,12 +299,18 @@ export default function PredictPage() {
         </div>
       )}
 
-      {/* 로딩 */}
-      {status === 'loading' && (
+      {/* 준비 중 / 로딩 */}
+      {(status === 'preparing' || status === 'loading') && (
         <div className="text-center py-8 space-y-3">
           <Loader2 size={36} className="animate-spin mx-auto" style={{ color: '#1e3a5f' }} />
-          <p className="text-sm text-slate-500">기출 DB 분석 중...</p>
-          <p className="text-xs text-slate-400">예상 소요시간 10~15초</p>
+          {status === 'preparing' ? (
+            <p className="text-sm text-slate-500">분석 준비 중...</p>
+          ) : (
+            <>
+              <p className="text-sm text-slate-500">기출 DB 분석 중...</p>
+              <p className="text-xs text-slate-400">예상 소요시간 10~15초</p>
+            </>
+          )}
         </div>
       )}
 
