@@ -80,6 +80,27 @@ const TYPE_COLORS = {
   '비교형': 'bg-orange-100 text-orange-800',
 };
 
+function safeParseJSON(text) {
+  const cleaned = text
+    .replace(/```json/g, '')
+    .replace(/```/g, '')
+    .trim();
+  try {
+    return JSON.parse(cleaned);
+  } catch (e) {
+    try {
+      const match = cleaned.match(/"problems"\s*:\s*(\[[\s\S]*)/);
+      if (match) {
+        let arr = match[1];
+        const lastBrace = arr.lastIndexOf('}');
+        arr = arr.substring(0, lastBrace + 1) + ']';
+        return JSON.parse('{"generated_at":"오늘","problems":' + arr + '}');
+      }
+    } catch (e2) {}
+    return null;
+  }
+}
+
 async function fetchPredictions(apiKey) {
   const url = `${GEMINI_BASE}/${MODEL}:generateContent?key=${apiKey}`;
   const res = await fetch(url, {
@@ -88,7 +109,7 @@ async function fetchPredictions(apiKey) {
     body: JSON.stringify({
       systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
       contents: [{ role: 'user', parts: [{ text: USER_PROMPT }] }],
-      generationConfig: { maxOutputTokens: 1800, temperature: 0.3, topP: 0.95 },
+      generationConfig: { maxOutputTokens: 3000, temperature: 0.3, topP: 0.95 },
     }),
   });
   if (!res.ok) {
@@ -97,8 +118,9 @@ async function fetchPredictions(apiKey) {
   }
   const data = await res.json();
   const text = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
-  const jsonStr = text.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
-  return JSON.parse(jsonStr);
+  const parsed = safeParseJSON(text);
+  if (!parsed) throw new Error('분석 중 오류가 발생했습니다. 다시 시도해주세요.');
+  return parsed;
 }
 
 function ProbBar({ value }) {
