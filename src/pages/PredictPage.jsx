@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FileText, Loader2, Sparkles } from 'lucide-react';
 
 const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
-const MODEL = 'gemini-1.5-flash-8b';
+const MODEL = 'gemini-2.0-flash';
 
 const SYSTEM_PROMPT =
   '당신은 측량 및 지형공간정보 기술사 출제경향 분석 전문가이다.\n' +
@@ -49,6 +49,30 @@ const USER_PROMPT =
   '    }\n' +
   '  ]\n' +
   '}';
+
+const CACHE_KEY = 'predict_cache';
+
+function todayStr() {
+  return new Date().toISOString().slice(0, 10); // 'YYYY-MM-DD'
+}
+
+function loadCache() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const cached = JSON.parse(raw);
+    if (cached.date !== todayStr()) return null;
+    return cached;
+  } catch {
+    return null;
+  }
+}
+
+function saveCache(problems) {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ date: todayStr(), problems }));
+  } catch {}
+}
 
 const RANK_STYLE = {
   1: { border: '#c9a227', bg: 'rgba(201,162,39,0.05)', medal: '🥇', label: '1순위' },
@@ -211,19 +235,42 @@ export default function PredictPage() {
   const [status, setStatus] = useState('idle'); // idle | loading | done | error
   const [result, setResult] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
+  const [fromCache, setFromCache] = useState(false);
 
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY ?? '';
 
-  async function handleAnalyze() {
+  // 마운트 시 오늘 캐시가 있으면 바로 표시
+  useEffect(() => {
+    const cached = loadCache();
+    if (cached) {
+      setResult({ generated_at: cached.date, problems: cached.problems });
+      setFromCache(true);
+      setStatus('done');
+    }
+  }, []);
+
+  async function handleAnalyze(force = false) {
     if (!apiKey || apiKey.includes('여기에')) {
       setErrorMsg('.env 파일의 VITE_GEMINI_API_KEY를 설정하세요.');
       setStatus('error');
       return;
     }
+    // 강제 새로고침이 아니면 캐시 우선
+    if (!force) {
+      const cached = loadCache();
+      if (cached) {
+        setResult({ generated_at: cached.date, problems: cached.problems });
+        setFromCache(true);
+        setStatus('done');
+        return;
+      }
+    }
     setStatus('loading');
     setErrorMsg('');
+    setFromCache(false);
     try {
       const data = await fetchPredictions(apiKey);
+      saveCache(data.problems);
       setResult(data);
       setStatus('done');
     } catch (e) {
@@ -291,9 +338,12 @@ export default function PredictPage() {
           <div className="flex items-center justify-between">
             <p className="text-xs text-slate-400">
               분석일: {result.generated_at}
+              {fromCache && (
+                <span className="ml-2 text-xs text-green-600 font-medium">· 캐시</span>
+              )}
             </p>
             <button
-              onClick={handleAnalyze}
+              onClick={() => handleAnalyze(true)}
               className="text-xs text-slate-500 hover:underline"
             >
               다시 분석
