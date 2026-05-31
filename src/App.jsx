@@ -35,7 +35,16 @@ export default function App() {
           사용을 위해 본인의 Gemini API 키를 입력하세요.
         </p>
         <div className="bg-blue-50 rounded-lg p-3 mb-4 text-xs text-blue-700">
-          🔑 무료 키 발급: aistudio.google.com<br />
+          🔑 무료 키 발급:{' '}
+          <a
+            href="https://aistudio.google.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline font-medium"
+          >
+            aistudio.google.com
+          </a>
+          <br />
           Google 계정으로 로그인 → Get API Key
         </div>
         <input
