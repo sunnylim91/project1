@@ -1,0 +1,133 @@
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   인쇄 전용 스타일 — A4 기준, 답안 영역만 출력
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.print-show { display: none; }
+
+@media print {
+  /* ── 페이지 여백 (A4 기준) ── */
+  @page {
+    size: A4;
+    margin: 20mm 25mm;
+  }
+
+  /* ── 숨길 요소: 네비게이션, 버튼, 검증결과, 입력 영역 ── */
+  header,
+  footer,
+  nav,
+  .no-print,
+  button,
+  [role="button"],
+  input,
+  textarea,
+  select {
+    display: none !important;
+  }
+
+  /* ── 인쇄 전용 요소 표시 ── */
+  .print-show {
+    display: block !important;
+  }
+
+  /* ── 전체 레이아웃 ── */
+  body {
+    background: #fff;
+    font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    font-size: 11pt;
+    line-height: 1.7;
+    color: #000;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── 답안 카드 스타일 초기화 ── */
+  .print-target {
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* ── 인쇄 헤더 ── */
+  .print-show {
+    border-bottom: 2px solid #1e3a5f;
+    margin-bottom: 16pt;
+    padding-bottom: 8pt;
+  }
+
+  /* ── 답안 본문 ── */
+  .answer-content {
+    font-size: 11pt;
+    line-height: 1.8;
+    color: #000;
+  }
+
+  .answer-content p  { margin-bottom: 6pt; }
+  .answer-content ul { padding-left: 18pt; margin-bottom: 6pt; }
+  .answer-content ol { padding-left: 18pt; margin-bottom: 6pt; }
+  .answer-content li { margin-bottom: 2pt; }
+
+  .answer-content strong {
+    font-weight: 700;
+    color: #1e3a5f;
+  }
+
+  /* ── 표 스타일 ── */
+  .answer-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8pt 0;
+    font-size: 10pt;
+    page-break-inside: avoid;
+  }
+
+  .answer-content th,
+  .answer-content td {
+    border: 1pt solid #333;
+    padding: 5pt 8pt;
+    text-align: left;
+  }
+
+  .answer-content thead th {
+    background-color: #1e3a5f !important;
+    color: #fff !important;
+    font-weight: 700;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── 페이지 나눔: Ⅰ, Ⅱ, Ⅲ 섹션 구분선 ── */
+  .answer-content h1 { page-break-before: always; }
+  .answer-content h1:first-child { page-break-before: avoid; }
+  .answer-content h2 { page-break-after: avoid; }
+  .answer-content h3 { page-break-after: avoid; }
+
+  /* 로마자 목차(p > strong)를 기준으로 페이지 나눔 힌트 */
+  .answer-content p:has(> strong:only-child) {
+    page-break-before: auto;
+    page-break-after: avoid;
+    margin-top: 12pt;
+    font-weight: 700;
+    font-size: 11.5pt;
+  }
+
+  /* ── 인용, 코드 ── */
+  .answer-content blockquote {
+    border-left: 3pt solid #1e3a5f;
+    padding-left: 8pt;
+    margin: 6pt 0;
+    color: #333;
+  }
+
+  .answer-content code {
+    background: #f3f4f6;
+    padding: 1pt 4pt;
+    border-radius: 2pt;
+    font-family: monospace;
+    font-size: 10pt;
+  }
+
+  /* ── 페이지 푸터 ── */
+  @page :left  { margin-left: 30mm; }
+  @page :right { margin-right: 30mm; }
+}

@@ -1,0 +1,41 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-sans: 'Noto Sans KR', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --color-navy: #1e3a5f;
+  --color-navy-dark: #152d4a;
+  --color-navy-light: #2a4f7c;
+  --color-gold: #c9a227;
+  --color-gold-light: #e8be3e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Noto Sans KR', system-ui, sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+  margin: 0;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* 답안 prose 스타일 */
+.answer-content p  { margin-bottom: 0.8rem; }
+.answer-content li { margin-bottom: 0.4rem; }
+.answer-content h1,
+.answer-content h2,
+.answer-content h3 {
+  margin-top: 1.2rem;
+  margin-bottom: 0.6rem;
+}
+.answer-content ol,
+.answer-content ul  { margin-bottom: 0.8rem; padding-left: 1.4rem; }
+
+/* 인쇄 전용 스타일은 src/styles/print.css 참조 */
