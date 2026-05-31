@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FileText, Loader2, Sparkles } from 'lucide-react';
 
 const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
-const MODEL = 'gemini-2.5-flash';
+const MODEL = 'gemini-2.5-flash-preview-04-17';
 
 const SYSTEM_PROMPT =
   '당신은 측량 및 지형공간정보 기술사 출제경향 분석 전문가이다.\n' +
@@ -117,8 +117,11 @@ async function fetchPredictions(apiKey) {
     throw new Error(body?.error?.message ?? `API 오류 (HTTP ${res.status})`);
   }
   const data = await res.json();
+  console.log('API 응답 전체:', JSON.stringify(data));
   const text = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+  console.log('추출된 text:', text);
   const parsed = safeParseJSON(text);
+  console.log('파싱 결과:', parsed);
   if (!parsed) throw new Error('분석 중 오류가 발생했습니다. 다시 시도해주세요.');
   return parsed;
 }
