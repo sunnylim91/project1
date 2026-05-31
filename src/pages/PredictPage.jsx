@@ -237,8 +237,6 @@ export default function PredictPage() {
   const [errorMsg, setErrorMsg] = useState('');
   const [fromCache, setFromCache] = useState(false);
 
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY ?? '';
-
   // 마운트 시 오늘 캐시가 있으면 바로 표시
   useEffect(() => {
     const cached = loadCache();
@@ -250,8 +248,9 @@ export default function PredictPage() {
   }, []);
 
   async function handleAnalyze(force = false) {
-    if (!apiKey || apiKey.includes('여기에')) {
-      setErrorMsg('.env 파일의 VITE_GEMINI_API_KEY를 설정하세요.');
+    const apiKey = localStorage.getItem('GEMINI_API_KEY') ?? '';
+    if (!apiKey) {
+      setErrorMsg('API 키가 없습니다. ⚙️ 버튼을 눌러 키를 초기화 후 재입력하세요.');
       setStatus('error');
       return;
     }

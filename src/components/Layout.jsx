@@ -62,6 +62,20 @@ export default function Layout({ children }) {
               })}
             </nav>
 
+            {/* API 키 초기화 */}
+            <button
+              onClick={() => {
+                if (window.confirm('API 키를 초기화하시겠습니까?')) {
+                  localStorage.removeItem('GEMINI_API_KEY');
+                  window.location.reload();
+                }
+              }}
+              className="text-white text-sm px-2 opacity-70 hover:opacity-100"
+              title="API 키 초기화"
+            >
+              ⚙️
+            </button>
+
             {/* 모바일 햄버거 */}
             <button
               className="md:hidden text-white p-2"

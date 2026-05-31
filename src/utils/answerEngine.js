@@ -1,9 +1,3 @@
-// ⚠️  보안 주의사항 ─────────────────────────────────────────────
-// VITE_GEMINI_API_KEY는 빌드 시 번들에 포함되어 브라우저에 노출됩니다.
-// 개인 학습·데모 용도에서는 허용되지만, 공개 배포 시 반드시
-// 백엔드 프록시 서버를 통해 API 키를 보호하세요.
-// ─────────────────────────────────────────────────────────────
-
 import { classifyType, extractKeywords } from './classifier.js';
 import { answerCache, computeCacheKey } from './cache.js';
 
@@ -231,7 +225,7 @@ export async function generateAnswer({
   onError,
 }) {
   if (!apiKey || apiKey.includes('여기에')) {
-    onError?.('Gemini API 키가 설정되지 않았습니다. .env 파일의 VITE_GEMINI_API_KEY를 설정하세요.');
+    onError?.('Gemini API 키가 없습니다. ⚙️ 버튼을 눌러 키를 초기화 후 재입력하세요.');
     return;
   }
 

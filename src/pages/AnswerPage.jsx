@@ -18,7 +18,7 @@ const TYPE_COLORS = {
   '비교형': 'bg-orange-100 text-orange-800',
 };
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY ?? '';
+const API_KEY = localStorage.getItem('GEMINI_API_KEY') ?? '';
 
 // ── 검증 항목 레이블 ──────────────────────────────────────────
 const SCORE_LABELS = {
