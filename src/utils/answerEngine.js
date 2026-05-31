@@ -3,7 +3,7 @@ import { answerCache, computeCacheKey } from './cache.js';
 
 // ── Gemini API 설정 ───────────────────────────────────────────
 const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
-const GEMINI_MODEL_GEN = 'gemini-2.5-flash-preview-04-17';   // 답안 생성용
+const GEMINI_MODEL_GEN = 'gemini-2.5-flash';   // 답안 생성용
 
 // ── 유형 감지 ─────────────────────────────────────────────────
 export function detectType(question) {
