@@ -146,6 +146,7 @@ function QuestionModal({ question, onClose }) {
 // ── 메인 컴포넌트 ─────────────────────────────────────────────
 
 export default function BrowserPage() {
+  const navigate = useNavigate();
   const [db, setDb] = useState(null);
   const [error, setError] = useState(null);
 
@@ -298,8 +299,36 @@ export default function BrowserPage() {
 
           {/* ── 문제 목록 ── */}
           <div className="flex-1 min-w-0">
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-              {/* 테이블 헤더 */}
+
+            {/* 모바일: 카드형 */}
+            <div className="md:hidden space-y-3">
+              {paginated.length === 0 ? (
+                <div className="py-12 text-center text-slate-400 text-sm">검색 결과가 없습니다.</div>
+              ) : paginated.map((q) => (
+                <div key={q.id} className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-mono text-slate-400">{q.year}년 · 제{q.round}회</span>
+                    <TypeBadge type={q.type} />
+                  </div>
+                  <p
+                    className="text-sm text-slate-800 leading-relaxed mb-3 cursor-pointer"
+                    onClick={() => setModal(q)}
+                  >
+                    {q.question}
+                  </p>
+                  <button
+                    onClick={() => navigate(`/answer?id=${q.id}`)}
+                    className="w-full py-2 rounded-lg text-xs font-semibold text-white"
+                    style={{ backgroundColor: '#1e3a5f' }}
+                  >
+                    답안 생성
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* 데스크톱: 테이블형 */}
+            <div className="hidden md:block bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
               <div className="grid grid-cols-[60px_60px_80px_1fr_80px] gap-2 px-4 py-2.5 bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wide">
                 <span>연도</span>
                 <span>회차</span>
@@ -307,12 +336,8 @@ export default function BrowserPage() {
                 <span>문제</span>
                 <span className="text-center">액션</span>
               </div>
-
-              {/* 테이블 바디 */}
               {paginated.length === 0 ? (
-                <div className="py-16 text-center text-slate-400 text-sm">
-                  검색 결과가 없습니다.
-                </div>
+                <div className="py-16 text-center text-slate-400 text-sm">검색 결과가 없습니다.</div>
               ) : (
                 <div className="divide-y divide-slate-100">
                   {paginated.map((q) => (

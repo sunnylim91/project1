@@ -83,13 +83,13 @@ function QuestionModal({ modal, onClose, navigate }) {
   if (!modal.open) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-end md:items-center justify-center md:p-4"
       style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-xl flex flex-col"
-        style={{ maxHeight: '70vh' }}
+        className="bg-white w-full max-w-xl flex flex-col rounded-t-2xl md:rounded-2xl shadow-2xl"
+        style={{ maxHeight: '90dvh' }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* 헤더 */}
@@ -221,7 +221,7 @@ export default function TrendPage() {
           title="주제별 빈출 TOP 10"
           sub="막대 클릭 시 관련 기출문제 목록 표시"
         >
-          <ResponsiveContainer width="100%" height={280}>
+          <ResponsiveContainer width="100%" height={220}>
             <BarChart
               layout="vertical"
               data={topicData}

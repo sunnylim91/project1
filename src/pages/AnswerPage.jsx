@@ -228,9 +228,10 @@ function AnswerMarkdown({ text }) {
       style={{
         whiteSpace: 'pre-wrap',
         fontFamily: 'Noto Sans KR, sans-serif',
-        fontSize: '13px',
+        fontSize: '12px',
         lineHeight: '1.9',
         wordBreak: 'break-word',
+        overflowWrap: 'break-word',
         width: '100%',
         height: 'auto',
         overflow: 'visible',
@@ -380,7 +381,7 @@ export default function AnswerPage() {
             onChange={(e) => { setQuestion(e.target.value); setTypeOverridden(false); }}
             placeholder="예) 네트워크 RTK"
             rows={4}
-            className="w-full resize-none text-sm border border-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-100 text-slate-800 placeholder:text-slate-300"
+            className="w-full resize-none text-sm border border-slate-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-100 text-slate-800 placeholder:text-slate-300 min-h-[120px] md:min-h-[80px]"
           />
 
           {/* 유형 선택 */}
@@ -471,7 +472,7 @@ export default function AnswerPage() {
                 )}
               </div>
               {!isWorking && answerText && (
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2 justify-end">
                   {/* 품질 검증 버튼 */}
                   <button
                     onClick={handleValidate}
