@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FileText, Loader2, Sparkles } from 'lucide-react';
 
 const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta/models';
-const MODEL = 'gemini-2.0-flash';
+const MODEL = 'gemini-2.5-flash';
 
 const SYSTEM_PROMPT =
   '당신은 측량 및 지형공간정보 기술사 출제경향 분석 전문가이다.\n' +
